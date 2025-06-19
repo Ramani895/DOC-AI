@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doc AI - Blood Donor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa 0%, #f5f7fa 100%);
+      color: #2C3E50;
+      padding-top: 100px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #00B4D8 60%, #48CAE4 100%);
+      box-shadow: 0 2px 12px rgba(0,180,216,0.10);
+      animation: fadeInDown 1s;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: #fff !important;
+      gap: 0.7rem;
+    }
+
+    .navbar-brand img {
+      height: 3.5rem;
+      width: 3.5rem;
+      object-fit: contain;
+    }
+
+    .nav-icon-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      margin: 0 4px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .nav-icon-btn:active {
+      transform: scale(0.96);
+    }
+
+    .nav-icon-btn:hover {
+      background: #fff;
+      color: #00B4D8;
+      transform: scale(1.12) rotate(-6deg);
+      box-shadow: 0 4px 16px rgba(0,180,216,0.13);
+    }
+
+    .nav-tooltip {
+      display: none;
+      position: absolute;
+      bottom: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2C3E50;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .nav-icon-btn:hover .nav-tooltip {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    .navbar-user {
+      margin-left: 1rem;
+      display: flex;
+      align-items: center;
+      color: #fff;
+    }
+
+    .navbar-user .btn {
+      background: #fff;
+      color: #00B4D8;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .navbar-user .btn:hover {
+      background: #00B4D8;
+      color: #fff;
+      transform: scale(1.08) rotate(8deg);
+    }
+
+    .donor-main-container {
+      max-width: 900px;
+      margin: 60px auto 0 auto;
+      background: #fff;
+      padding: 0;
+      border-radius: 24px;
+      box-shadow: 0 8px 30px rgba(0, 180, 216, 0.12);
+      overflow: hidden;
+      animation: fadeInUp 1s cubic-bezier(.23,1.01,.32,1) both;
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 600px;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .donor-tabs {
+      display: flex;
+      justify-content: center;
+      background: #fafdff;
+      border-bottom: 1.5px solid #e0e0e0;
+      padding: 0;
+    }
+    .donor-tab-btn {
+      flex: 1 1 0;
+      padding: 18px 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #00B4D8;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+      outline: none;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 1;
+    }
+    .donor-tab-btn.active, .donor-tab-btn:focus {
+      color: #fff;
+      background: linear-gradient(90deg, #00B4D8 60%, #48CAE4 100%);
+      border-bottom: 3px solid #00B4D8;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 2px 8px rgba(0,180,216,0.08);
+      animation: pulseTab 0.5s;
+    }
+    @keyframes pulseTab {
+      0% { box-shadow: 0 0 0 0 #00B4D855; }
+      70% { box-shadow: 0 0 0 10px #00B4D800; }
+      100% { box-shadow: 0 0 0 0 #00B4D800; }
+    }
+
+    .donor-content {
+      width: 100%;
+      padding: 40px 32px 32px 32px;
+      min-height: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+    .donor-content.animate__fadeInRight,
+    .donor-content.animate__fadeInLeft {
+      animation-duration: 0.7s;
+    }
+
+    @keyframes fadeInContent {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .donor-content h2 {
+      font-weight: 600;
+      color: #00B4D8;
+      margin-bottom: 20px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      animation: fadeInContent 0.7s;
+    }
+
+    .form-control, .form-select {
+      border-radius: 12px;
+      border: 1.5px solid #e0e0e0;
+      background: #fafdff;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+      box-shadow: 0 0 0 2px #00B4D855;
+      border-color: #00B4D8;
+      background: #fff;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #2ECC71 60%, #27ae60 100%);
+      border: none;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(46,204,113,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #28b463 60%, #229954 100%);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 4px 16px rgba(46,204,113,0.13);
+    }
+
+    #thankyou {
+      display: none;
+      margin-top: 20px;
+      background: #e7fff6;
+      padding: 16px;
+      border-radius: 10px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0,180,216,0.10);
+      color: #239b56;
+      text-align: center;
+      animation: fadeInContent 0.7s;
+    }
+
+    /* Donor List Styles */
+    .donor-list-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      background: #fafdff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,180,216,0.06);
+      animation: fadeInContent 0.7s;
+    }
+    .donor-list-table th, .donor-list-table td {
+      padding: 12px 10px;
+      text-align: center;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .donor-list-table th {
+      background: #e0f7fa;
+      color: #00B4D8;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .donor-list-table tr:last-child td {
+      border-bottom: none;
+    }
+    .donor-list-table td {
+      font-size: 1rem;
+      color: #2C3E50;
+    }
+    .donor-list-table .contact-btn {
+      background: linear-gradient(90deg, #00B4D8 60%, #48CAE4 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 0.98rem;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,180,216,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .donor-list-table .contact-btn:hover {
+      background: linear-gradient(90deg, #0096c7 60%, #00B4D8 100%);
+      transform: scale(1.08) rotate(-3deg);
+      box-shadow: 0 4px 16px rgba(0,180,216,0.13);
+    }
+
+    .donor-search-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .donor-search-bar .form-select, .donor-search-bar .form-control {
+      max-width: 180px;
+      min-width: 120px;
+    }
+    .donor-search-bar .btn {
+      min-width: 120px;
+    }
+
+    /* Floating animation for icons */
+    .fa-hand-holding-droplet,
+    .fa-user-plus,
+    .fa-magnifying-glass {
+      animation: floatIcon 2.2s ease-in-out infinite alternate;
+    }
+    @keyframes floatIcon {
+      0% { transform: translateY(0);}
+      100% { transform: translateY(-7px);}
+    }
+
+    /* Animated input focus */
+    .form-control:focus, .form-select:focus {
+      animation: inputFocusPulse 0.4s;
+    }
+    @keyframes inputFocusPulse {
+      0% { box-shadow: 0 0 0 0 #00B4D855; }
+      70% { box-shadow: 0 0 0 8px #00B4D810; }
+      100% { box-shadow: 0 0 0 0 #00B4D800; }
+    }
+
+    /* Animated background for donor-main-container */
+    .donor-main-container {
+      background: linear-gradient(120deg, #fafdff 80%, #e0f7fa 100%);
+      position: relative;
+      overflow: visible;
+    }
+    .donor-main-container::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, #00B4D822 60%, transparent 100%);
+      z-index: 0;
+      animation: bgPulse 3s infinite alternate;
+    }
+    @keyframes bgPulse {
+      0% { opacity: 0.7; transform: scale(1);}
+      100% { opacity: 1; transform: scale(1.08);}
+    }
+
+    @media (max-width: 700px) {
+      .donor-main-container {
+        flex-direction: column;
+        min-width: 100vw;
+        border-radius: 0;
+        margin: 0;
+      }
+      .donor-content {
+        padding: 28px 8px 24px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar replica from home.html -->
+  <nav class="navbar navbar-expand-lg px-4">
+    <div class="container-fluid px-0">
+      <a class="navbar-brand" href="home.html">
+        <img src="images/logo.webp" alt="Doc AI Logo">
+        Doc AI
+      </a>
+      <div class="d-flex align-items-center" id="navIconBar">
+        <a href="symptom.html" class="nav-icon-btn" title="Symptom Checker">
+          <i class="fa-solid fa-stethoscope"></i>
+          <span class="nav-tooltip">Symptom Checker</span>
+        </a>
+        <a href="doctors.html" class="nav-icon-btn" title="Connect to Doctor">
+          <i class="fa-solid fa-user-doctor"></i>
+          <span class="nav-tooltip">Connect to Doctor</span>
+        </a>
+        <a href="skin-scanner.html" class="nav-icon-btn" title="Skin Scanner">
+          <i class="fa-solid fa-camera"></i>
+          <span class="nav-tooltip">Skin Scanner</span>
+        </a>
+        <a href="report-analyzer.html" class="nav-icon-btn" title="Report Analyzer">
+          <i class="fa-solid fa-file-medical"></i>
+          <span class="nav-tooltip">Report Analyzer</span>
+        </a>
+        <a href="blood-donor.html" class="nav-icon-btn" title="Blood Donor">
+          <i class="fa-solid fa-hand-holding-droplet"></i>
+          <span class="nav-tooltip">Blood Donor</span>
+        </a>
+        <a href="book-hospital.html" class="nav-icon-btn" title="Book Hospital">
+          <i class="fa-solid fa-hospital"></i>
+          <span class="nav-tooltip">Book Hospital</span>
+        </a>
+        <a href="prescription.html" class="nav-icon-btn" title="Prescription">
+          <i class="fa-solid fa-file-lines"></i>
+          <span class="nav-tooltip">Prescription</span>
+        </a>
+      </div>
+      <div class="navbar-user">
+        <span>Welcome, <strong>Ramani</strong></span>
+        <button class="btn" id="logoutBtn" title="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Donor Section with Tabs -->
+  <div class="donor-main-container mt-5 shadow-lg position-relative">
+    <div class="donor-tabs w-100">
+      <button class="donor-tab-btn active" id="registerTabBtn" type="button">
+        <i class="fa-solid fa-user-plus me-2"></i>Register as Donor
+      </button>
+      <button class="donor-tab-btn" id="findTabBtn" type="button">
+        <i class="fa-solid fa-magnifying-glass me-2"></i>Find Donors
+      </button>
+    </div>
+    <!-- Registration Content -->
+    <div class="donor-content animate__animated animate__fadeIn" id="registerContent">
+      <h2><i class="fa-solid fa-hand-holding-droplet text-danger me-2"></i> Blood Donor Registration</h2>
+      <p class="mb-4 animate__animated animate__fadeInDown">Fill in your details to register as a blood donor. You may be contacted during emergencies.</p>
+      <form id="donorForm" autocomplete="off" class="animate__animated animate__fadeInUp">
+        <input type="text" class="form-control mb-3" placeholder="Your Name" required>
+        <input type="email" class="form-control mb-3" placeholder="Email Address" required>
+        <input type="tel" class="form-control mb-3" placeholder="Phone Number" required pattern="[0-9]{10,}">
+        <select class="form-select mb-3" required>
+          <option value="">Select Blood Group</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+          <option>O+</option>
+          <option>O-</option>
+        </select>
+        <input type="text" class="form-control mb-3" placeholder="City / Location" required>
+        <button type="submit" class="btn btn-primary px-5 animate__animated animate__pulse">Register</button>
+      </form>
+      <div id="thankyou" class="animate__animated">Thank you for registering! You may be contacted if your blood group is needed.</div>
+    </div>
+    <!-- Find Donors Content -->
+    <div class="donor-content" id="findContent" style="display:none;">
+      <h2 class="animate__animated animate__fadeIn"><i class="fa-solid fa-magnifying-glass text-primary me-2"></i> Find Blood Donors</h2>
+      <p class="mb-4 animate__animated animate__fadeInDown">Search for registered blood donors by blood group and city/location.</p>
+      <form class="donor-search-bar animate__animated animate__fadeInUp" id="donorSearchForm" autocomplete="off">
+        <select class="form-select" id="searchBloodGroup">
+          <option value="">All Blood Groups</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+          <option>O+</option>
+          <option>O-</option>
+        </select>
+        <input type="text" class="form-control" id="searchCity" placeholder="City / Location">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-search me-1"></i>Find</button>
+      </form>
+      <div id="donorListContainer">
+        <!-- Donor list will be rendered here -->
+      </div>
+    </div>
+    <!-- Floating animated blood drop for extra interactivity -->
+    <div style="position:absolute;bottom:20px;right:20px;pointer-events:none;z-index:0;">
+      <i class="fa-solid fa-hand-holding-droplet text-danger" style="font-size:2.5rem;opacity:0.18;animation: floatIcon 2.5s infinite alternate;"></i>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navbar logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.href = "index.html";
+    });
+
+    // Animate nav icons on click and redirect
+    document.querySelectorAll('.nav-icon-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        // Let the default <a> navigation happen, but add a quick animation
+        this.classList.add('animate__animated', 'animate__rubberBand');
+        setTimeout(() => {
+          this.classList.remove('animate__animated', 'animate__rubberBand');
+        }, 600);
+      });
+    });
+
+    // Tab switching logic with animation
+    const registerTabBtn = document.getElementById('registerTabBtn');
+    const findTabBtn = document.getElementById('findTabBtn');
+    const registerContent = document.getElementById('registerContent');
+    const findContent = document.getElementById('findContent');
+
+    registerTabBtn.addEventListener('click', () => {
+      if (registerTabBtn.classList.contains('active')) return;
+      registerTabBtn.classList.add('active');
+      findTabBtn.classList.remove('active');
+      findContent.classList.remove('animate__fadeInLeft');
+      registerContent.style.display = '';
+      findContent.style.display = 'none';
+      registerContent.classList.remove('animate__fadeInLeft');
+      registerContent.classList.add('animate__animated', 'animate__fadeInRight');
+      setTimeout(() => registerContent.classList.remove('animate__animated', 'animate__fadeInRight'), 700);
+    });
+    findTabBtn.addEventListener('click', () => {
+      if (findTabBtn.classList.contains('active')) return;
+      findTabBtn.classList.add('active');
+      registerTabBtn.classList.remove('active');
+      registerContent.classList.remove('animate__fadeInRight');
+      findContent.style.display = '';
+      registerContent.style.display = 'none';
+      findContent.classList.remove('animate__fadeInRight');
+      findContent.classList.add('animate__animated', 'animate__fadeInLeft');
+      setTimeout(() => findContent.classList.remove('animate__animated', 'animate__fadeInLeft'), 700);
+      renderDonorList();
+    });
+
+    // Donor data storage (simulate backend with localStorage)
+    function getDonors() {
+      return JSON.parse(localStorage.getItem('donors') || '[]');
+    }
+    function saveDonor(donor) {
+      const donors = getDonors();
+      donors.push(donor);
+      localStorage.setItem('donors', JSON.stringify(donors));
+    }
+
+    // Registration form logic
+    const donorForm = document.getElementById('donorForm');
+    donorForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const inputs = donorForm.querySelectorAll('input, select');
+      const donor = {
+        name: inputs[0].value.trim(),
+        email: inputs[1].value.trim(),
+        phone: inputs[2].value.trim(),
+        blood: inputs[3].value,
+        city: inputs[4].value.trim()
+      };
+      if (!donor.name || !donor.email || !donor.phone || !donor.blood || !donor.city) {
+        return;
+      }
+      saveDonor(donor);
+      donorForm.reset();
+      const thankyou = document.getElementById('thankyou');
+      thankyou.style.display = 'block';
+      thankyou.classList.remove('animate__fadeOutUp');
+      thankyou.classList.add('animate__animated', 'animate__fadeInUp');
+      setTimeout(() => {
+        thankyou.classList.remove('animate__fadeInUp');
+        thankyou.classList.add('animate__fadeOutUp');
+      }, 1800);
+      setTimeout(() => {
+        thankyou.style.display = 'none';
+        thankyou.classList.remove('animate__fadeOutUp');
+      }, 2600);
+    });
+
+    // Find Donors logic
+    function renderDonorList() {
+      const donorListContainer = document.getElementById('donorListContainer');
+      const donors = getDonors();
+      const searchBloodGroup = document.getElementById('searchBloodGroup').value;
+      const searchCity = document.getElementById('searchCity').value.trim().toLowerCase();
+
+      let filtered = donors;
+      if (searchBloodGroup) {
+        filtered = filtered.filter(d => d.blood === searchBloodGroup);
+      }
+      if (searchCity) {
+        filtered = filtered.filter(d => d.city.toLowerCase().includes(searchCity));
+      }
+
+      if (filtered.length === 0) {
+        donorListContainer.innerHTML = `<div class="text-center text-muted mt-4 animate__animated animate__fadeIn"><i class="fa-solid fa-circle-exclamation me-2"></i>No donors found for your criteria.</div>`;
+        return;
+      }
+
+      let table = `<table class="donor-list-table animate__animated animate__fadeIn">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Blood Group</th>
+            <th>City</th>
+            <th>Contact</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      filtered.forEach((donor, idx) => {
+        table += `<tr class="animate__animated animate__fadeInUp" style="animation-delay:${idx*0.07}s;">
+          <td>${donor.name}</td>
+          <td><span class="badge bg-danger bg-gradient fs-6 animate__animated animate__pulse animate__infinite">${donor.blood}</span></td>
+          <td>${donor.city}</td>
+          <td>
+            <button class="contact-btn" onclick="showContact('${donor.email}','${donor.phone}')" type="button">
+              <i class="fa-solid fa-envelope me-1"></i>Email / <i class="fa-solid fa-phone"></i>
+            </button>
+          </td>
+        </tr>`;
+      });
+      table += `</tbody></table>`;
+      donorListContainer.innerHTML = table;
+    }
+
+    // Show contact info in a modal
+    function showContact(email, phone) {
+      const modalHtml = `
+        <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content animate__animated animate__zoomIn">
+              <div class="modal-header">
+                <h5 class="modal-title" id="contactModalLabel"><i class="fa-solid fa-address-card me-2"></i>Donor Contact</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                <div class="mb-2"><i class="fa-solid fa-envelope text-primary me-2"></i><a href="mailto:${email}">${email}</a></div>
+                <div><i class="fa-solid fa-phone text-success me-2"></i><a href="tel:${phone}">${phone}</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      // Remove any existing modal
+      const oldModal = document.getElementById('contactModal');
+      if (oldModal) oldModal.remove();
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+      const modal = new bootstrap.Modal(document.getElementById('contactModal'));
+      modal.show();
+    }
+    window.showContact = showContact;
+
+    // Search form logic
+    document.getElementById('donorSearchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      renderDonorList();
+    });
+
+    // Optionally, render on page load if Find Donors is default
+    // renderDonorList();
+  </script>
+</body>
+</html>

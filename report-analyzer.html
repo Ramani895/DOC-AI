@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doc AI - Report Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa 0%, #f5f7fa 100%);
+      color: #2C3E50;
+      min-height: 100vh;
+      padding-top: 100px;
+      margin: 0;
+    }
+    .navbar {
+      background: linear-gradient(90deg, #00B4D8 60%, #48CAE4 100%);
+      box-shadow: 0 2px 12px rgba(0,180,216,0.10);
+      animation: fadeInDown 1s;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: #fff !important;
+      letter-spacing: 0.03em;
+      gap: 0.7rem;
+      text-decoration: none;
+    }
+    .navbar-brand img {
+      height: 3.5rem;
+      width: 3.5rem;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,180,216,0.10));
+    }
+    .nav-icon-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      margin: 0 4px;
+      position: relative;
+    }
+    .nav-icon-btn:hover, .nav-icon-btn:focus {
+      background: #fff;
+      color: #00B4D8;
+      transform: scale(1.08);
+      outline: none;
+    }
+    .nav-icon-btn .nav-tooltip {
+      display: none;
+      position: absolute;
+      bottom: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2C3E50;
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+    }
+    .nav-icon-btn:hover .nav-tooltip,
+    .nav-icon-btn:focus .nav-tooltip {
+      display: block;
+    }
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      margin-left: 1rem;
+    }
+    .navbar-user span {
+      color: #fff;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+    .navbar-user .btn {
+      margin-left: 0.25rem;
+      background: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00B4D8;
+    }
+
+    .analyzer-container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 180, 216, 0.12);
+      text-align: center;
+    }
+
+    .analyzer-container h2 {
+      font-weight: 600;
+      color: #00B4D8;
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      border-radius: 12px;
+      border: 1.5px solid #e0e0e0;
+      background: #fafdff;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 2px #00B4D855;
+      border-color: #00B4D8;
+      background: #fff;
+    }
+
+    #resultBox {
+      margin-top: 24px;
+      background-color: #f1fdfc;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,180,216,0.08);
+      display: none;
+    }
+
+    #loader {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #2ECC71 60%, #27ae60 100%);
+      border: none;
+      font-weight: 600;
+      border-radius: 12px;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #28b463 60%, #229954 100%);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar replica of home.html -->
+  <nav class="navbar navbar-expand-lg px-4">
+    <div class="container-fluid px-0">
+      <a class="navbar-brand" href="home.html">
+        <img src="images/logo.webp" alt="Doc AI Logo">
+        <span>Doc AI</span>
+      </a>
+      <div class="d-flex align-items-center">
+        <a href="symptom.html" class="nav-icon-btn" title="Symptom Checker">
+          <i class="fa-solid fa-stethoscope"></i>
+          <span class="nav-tooltip">Symptom Checker</span>
+        </a>
+        <a href="doctors.html" class="nav-icon-btn" title="Connect to Doctor">
+          <i class="fa-solid fa-user-doctor"></i>
+          <span class="nav-tooltip">Connect to Doctor</span>
+        </a>
+        <a href="skin-scanner.html" class="nav-icon-btn" title="Skin Scanner">
+          <i class="fa-solid fa-camera"></i>
+          <span class="nav-tooltip">Skin Scanner</span>
+        </a>
+        <a href="report-analyzer.html" class="nav-icon-btn" title="Report Analyzer">
+          <i class="fa-solid fa-file-medical"></i>
+          <span class="nav-tooltip">Report Analyzer</span>
+        </a>
+        <a href="blood-donor.html" class="nav-icon-btn" title="Blood Donor">
+          <i class="fa-solid fa-hand-holding-droplet"></i>
+          <span class="nav-tooltip">Blood Donor</span>
+        </a>
+        <a href="book-hospital.html" class="nav-icon-btn" title="Book Hospital">
+          <i class="fa-solid fa-hospital"></i>
+          <span class="nav-tooltip">Book Hospital</span>
+        </a>
+        <a href="prescription.html" class="nav-icon-btn" title="Prescription">
+          <i class="fa-solid fa-file-lines"></i>
+          <span class="nav-tooltip">Prescription</span>
+        </a>
+      </div>
+      <div class="navbar-user">
+        <span>Welcome, <strong>Ramani</strong></span>
+        <button class="btn" id="logoutBtn" title="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ✅ Report Analyzer Section -->
+  <div class="analyzer-container mt-5">
+    <h2><i class="fa-solid fa-file-medical text-primary me-2"></i> Report Analyzer</h2>
+    <p class="mb-4">Upload your lab report or medical file for an AI-powered analysis and suggestions.</p>
+
+    <form id="reportForm">
+      <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="form-control mb-3" id="reportFile" required>
+      <button type="submit" class="btn btn-primary px-4">Analyze Report</button>
+    </form>
+
+    <!-- Loader -->
+    <div id="loader">
+      <div class="spinner-border text-info mt-4" role="status">
+        <span class="visually-hidden">Analyzing...</span>
+      </div>
+      <p class="mt-2">Processing your report...</p>
+    </div>
+
+    <!-- AI Result -->
+    <div id="resultBox" class="mt-4">
+      <h5>AI Findings:</h5>
+      <p id="resultText">Your analysis will be displayed here.</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      window.location.href = "index.html";
+    });
+
+    const form = document.getElementById('reportForm');
+    const loader = document.getElementById('loader');
+    const resultBox = document.getElementById('resultBox');
+    const resultText = document.getElementById('resultText');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      loader.style.display = 'block';
+      resultBox.style.display = 'none';
+
+      setTimeout(() => {
+        loader.style.display = 'none';
+        resultBox.style.display = 'block';
+        resultText.innerText = "The uploaded report suggests mild vitamin D deficiency and borderline cholesterol levels. Consider dietary changes and follow-up testing.";
+      }, 2500);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Connect with Doctor - Doc AI</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa 0%, #f5f7fa 100%);
+      margin: 0; padding: 0;
+      color: #2C3E50;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(90deg, #00B4D8 60%, #48CAE4 100%) !important;
+      box-shadow: 0 2px 12px rgba(0,180,216,0.08);
+      font-family: 'Montserrat','Inter';
+      min-height: 80px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: #fff !important;
+      gap: 0.7rem;
+      text-decoration: none;
+    }
+
+    .navbar-brand img {
+      height: 3.5rem;
+      width: 3.5rem;
+      object-fit: contain;
+    }
+
+    .nav-icon-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 0 4px;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .nav-icon-btn:hover {
+      background: #fff;
+      color: #00B4D8;
+      transform: scale(1.08);
+    }
+
+    .nav-tooltip {
+      display: none;
+      position: absolute;
+      bottom: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2C3E50;
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .nav-icon-btn:hover .nav-tooltip {
+      display: block;
+    }
+
+    .navbar-user span {
+      color: #fff;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    .page-container {
+      max-width: 900px;
+      margin: 48px auto;
+      padding: 36px 32px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,180,216,0.10);
+    }
+
+    h2 {
+      color: #00B4D8;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #0096c7;
+    }
+
+    .form-control, .form-select {
+      border-radius: 10px;
+      border: 1.5px solid #caf0f8;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #00B4D8;
+      box-shadow: 0 0 0 2px #90e0ef55;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #00B4D8 0%, #2ECC71 100%);
+      border: none;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 8px 28px;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #0096c7 0%, #28b463 100%);
+    }
+
+    .doctor-card {
+      border: 1.5px solid #caf0f8;
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(90deg, #fafdff 80%, #e0f7fa 100%);
+    }
+
+    .doctor-card h5 {
+      color: #00B4D8;
+      font-weight: 600;
+    }
+
+    .doctor-card small {
+      color: #888;
+    }
+
+    .payment-section {
+      margin-top: 30px;
+      padding: 24px 18px;
+      border-radius: 14px;
+      background: #fafdff;
+      border: 1.5px solid #caf0f8;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .meeting-link-section {
+      margin-top: 30px;
+      padding: 24px 18px;
+      border-radius: 14px;
+      background: #e0f7fa;
+      border: 1.5px solid #00B4D8;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="home.html">
+        <img src="images/logo.webp" alt="Doc AI Logo">
+        <span>Doc AI</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="mx-auto">
+          <ul class="navbar-nav align-items-center flex-row flex-wrap">
+            <li class="nav-item"><a class="nav-icon-btn" href="symptom.html"><i class="fa-solid fa-stethoscope"></i><span class="nav-tooltip">Symptom Checker</span></a></li>
+            <li class="nav-item"><a class="nav-icon-btn" href="doctors.html"><i class="fa-solid fa-user-doctor"></i><span class="nav-tooltip">Connect to Doctor</span></a></li>
+            <li class="nav-item"><a class="nav-icon-btn" href="skin-scanner.html"><i class="fa-solid fa-camera"></i><span class="nav-tooltip">Skin Scanner</span></a></li>
+            <li class="nav-item"><a class="nav-icon-btn" href="report-analyzer.html"><i class="fa-solid fa-file-medical"></i><span class="nav-tooltip">Report Analyzer</span></a></li>
+            <li class="nav-item"><a class="nav-icon-btn" href="blood-donor.html"><i class="fa-solid fa-hand-holding-droplet"></i><span class="nav-tooltip">Blood Donor</span></a></li>
+            <li class="nav-item"><a class="nav-icon-btn" href="book-hospital.html"><i class="fa-solid fa-hospital"></i><span class="nav-tooltip">Book Hospital</span></a></li>
+            <li class="nav-item"><a class="nav-icon-btn" href="prescription.html"><i class="fa-solid fa-file-lines"></i><span class="nav-tooltip">Prescription</span></a></li>
+          </ul>
+        </div>
+        <div class="navbar-user d-flex align-items-center">
+          <span>Welcome, <strong>Ramani</strong></span>
+          <button class="btn btn-light btn-sm rounded-circle ms-2" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-right-from-bracket text-primary"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="page-container">
+    <h2 class="text-center"><i class="fa-solid fa-user-doctor text-primary me-2"></i>Connect with a Doctor</h2>
+    <form id="doctorConnectForm">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <label class="form-label" for="hospitalSelect">Hospital</label>
+          <select class="form-select" id="hospitalSelect" required>
+            <option value="">-- Select --</option>
+            <option value="apollo">Apollo Hospital</option>
+            <option value="fortis">Fortis Hospital</option>
+            <option value="manipal">Manipal Hospital</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="speciality">Specialty</label>
+          <select class="form-select" id="speciality" required>
+            <option value="">-- Select --</option>
+            <option value="general">General Physician</option>
+            <option value="dermatologist">Dermatologist</option>
+            <option value="cardiologist">Cardiologist</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="doctorSelect">Doctor</label>
+          <select class="form-select" id="doctorSelect" required disabled>
+            <option value="">-- Select Specialty & Hospital First --</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="preferredTime">Appointment Time</label>
+          <input type="datetime-local" class="form-control" id="preferredTime" required />
+        </div>
+        <div class="col-md-12">
+          <label class="form-label" for="notes">Symptoms</label>
+          <input type="text" class="form-control" id="notes" required placeholder="e.g. Fever, cough" />
+        </div>
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-primary px-5" id="findDoctorBtn">
+            <span id="findDoctorBtnText">Find Doctor</span>
+            <span class="spinner-border spinner-border-sm ms-2" id="findDoctorSpinner" style="display:none;"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div id="costSection"></div>
+    <div id="paymentSection"></div>
+    <div id="meetingLinkSection"></div>
+
+    <hr class="my-5" />
+    <div id="doctorCards"></div>
+  </div>
+
+  <script>
+    // Demo data for hospitals and doctors
+    const hospitals = [
+      { id: "apollo", name: "Apollo Hospital" },
+      { id: "fortis", name: "Fortis Hospital" },
+      { id: "manipal", name: "Manipal Hospital" }
+    ];
+
+    // Each doctor is associated with a hospital and has a cost
+    const doctors = [
+      { name: "Dr. Priya Sharma", speciality: "general", hospital: "apollo", experience: "5+ yrs", available: "Today 4–6 PM", cost: 500 },
+      { name: "Dr. Rajesh Menon", speciality: "cardiologist", hospital: "fortis", experience: "10+ yrs", available: "Tomorrow 10–1 PM", cost: 800 },
+      { name: "Dr. Anjali Verma", speciality: "dermatologist", hospital: "apollo", experience: "7+ yrs", available: "Today 2–5 PM", cost: 600 },
+      { name: "Dr. Meera Kapoor", speciality: "general", hospital: "manipal", experience: "8+ yrs", available: "Tomorrow 11–2 PM", cost: 550 },
+      { name: "Dr. Suresh Iyer", speciality: "cardiologist", hospital: "apollo", experience: "12+ yrs", available: "Today 5–7 PM", cost: 900 },
+      { name: "Dr. Ritu Singh", speciality: "dermatologist", hospital: "fortis", experience: "6+ yrs", available: "Tomorrow 3–6 PM", cost: 650 }
+    ];
+
+    // Helper to reset cost/payment/meeting sections
+    function resetDynamicSections() {
+      document.getElementById('costSection').innerHTML = '';
+      document.getElementById('paymentSection').innerHTML = '';
+      document.getElementById('meetingLinkSection').innerHTML = '';
+    }
+
+    // Populate doctor select based on hospital and speciality
+    function updateDoctorSelect() {
+      resetDynamicSections();
+      const hospital = document.getElementById('hospitalSelect').value;
+      const speciality = document.getElementById('speciality').value;
+      const docSelect = document.getElementById('doctorSelect');
+      docSelect.innerHTML = '';
+
+      if (!hospital || !speciality) {
+        docSelect.innerHTML = '<option value="">-- Select Specialty & Hospital First --</option>';
+        docSelect.disabled = true;
+        return;
+      }
+
+      const filtered = doctors.filter(d => d.speciality === speciality && d.hospital === hospital);
+      if (filtered.length === 0) {
+        docSelect.innerHTML = '<option value="">No doctors available</option>';
+        docSelect.disabled = true;
+        return;
+      }
+      docSelect.innerHTML = '<option value="">-- Select Doctor --</option>';
+      filtered.forEach(doc => {
+        const opt = document.createElement('option');
+        opt.value = doc.name;
+        opt.textContent = `${doc.name} (${doc.experience})`;
+        docSelect.appendChild(opt);
+      });
+      docSelect.disabled = false;
+    }
+
+    document.getElementById('hospitalSelect').addEventListener('change', updateDoctorSelect);
+    document.getElementById('speciality').addEventListener('change', updateDoctorSelect);
+
+    // Show cost when doctor is selected
+    document.getElementById('doctorSelect').addEventListener('change', function () {
+      resetDynamicSections();
+      const doctorName = this.value;
+      if (!doctorName) return;
+      const hospital = document.getElementById('hospitalSelect').value;
+      const doc = doctors.find(d => d.name === doctorName && d.hospital === hospital);
+      if (doc) {
+        document.getElementById('costSection').innerHTML = `
+          <div class="payment-section">
+            <h5>Consultation Fee</h5>
+            <div class="mb-2"><strong>₹${doc.cost}</strong></div>
+            <button class="btn btn-success" id="payNowBtn">Pay & Get Meeting Link</button>
+          </div>
+        `;
+        // Attach payment handler
+        setTimeout(() => {
+          document.getElementById('payNowBtn').onclick = function() {
+            handlePayment(doc);
+          };
+        }, 0);
+      }
+    });
+
+    // Payment simulation and meeting link
+    function handlePayment(doc) {
+      document.getElementById('paymentSection').innerHTML = `
+        <div class="payment-section">
+          <div class="mb-2">
+            <span class="spinner-border spinner-border-sm text-success"></span>
+            <span>Processing payment...</span>
+          </div>
+        </div>
+      `;
+      setTimeout(() => {
+        document.getElementById('paymentSection').innerHTML = '';
+        document.getElementById('meetingLinkSection').innerHTML = `
+          <div class="meeting-link-section">
+            <h5>Payment Successful!</h5>
+            <p>Your meeting with <strong>${doc.name}</strong> is confirmed.</p>
+            <a href="https://meet.jit.si/${encodeURIComponent(doc.name.replace(/\s/g, ''))}" target="_blank" class="btn btn-primary">
+              Join Meeting
+            </a>
+            <div class="mt-2"><small>Meeting link is also sent to your email.</small></div>
+          </div>
+        `;
+      }, 1800);
+    }
+
+    // Form submission: show doctor card(s) for the selected doctor
+    document.getElementById('doctorConnectForm').onsubmit = function (e) {
+      e.preventDefault();
+      resetDynamicSections();
+
+      const hospital = document.getElementById('hospitalSelect').value;
+      const spec = document.getElementById('speciality').value;
+      const docName = document.getElementById('doctorSelect').value;
+      const time = document.getElementById('preferredTime').value;
+      const notes = document.getElementById('notes').value.trim();
+
+      if (!hospital || !spec || !docName || !time || !notes) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const results = doctors.filter(d => d.speciality === spec && d.name === docName && d.hospital === hospital);
+      document.getElementById('doctorCards').innerHTML = results.map(d => `
+        <div class="doctor-card">
+          <div>
+            <h5>${d.name}</h5>
+            <small>${hospitals.find(h=>h.id===d.hospital)?.name || ''} | ${d.speciality.charAt(0).toUpperCase()+d.speciality.slice(1)} | ${d.experience}</small><br>
+            <small>Available: ${d.available}</small>
+          </div>
+          <span class="badge bg-info text-dark">₹${d.cost}</span>
+        </div>
+      `).join('') || '<div class="alert alert-warning">No matching doctors found.</div>';
+
+      // Show cost and payment button
+      if (results.length > 0) {
+        const d = results[0];
+        document.getElementById('costSection').innerHTML = `
+          <div class="payment-section">
+            <h5>Consultation Fee</h5>
+            <div class="mb-2"><strong>₹${d.cost}</strong></div>
+            <button class="btn btn-success" id="payNowBtn">Pay & Get Meeting Link</button>
+          </div>
+        `;
+        setTimeout(() => {
+          document.getElementById('payNowBtn').onclick = function() {
+            handlePayment(d);
+          };
+        }, 0);
+      }
+    };
+  </script>
+</body>
+</html>

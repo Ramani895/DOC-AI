@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Doc AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa 0%, #f5f7fa 100%);
+      color: #2C3E50;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .register-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 40px 32px 32px 32px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(44, 62, 80, 0.12);
+      position: relative;
+      animation: fadeInUp 1s cubic-bezier(.42,0,.58,1);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 18px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      animation: bounceIn 1.2s;
+    }
+
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      70% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .form-label {
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .form-control, .form-select {
+      border-radius: 10px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+      box-shadow: 0 0 0 2px #00B4D8;
+      border-color: #00B4D8;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #2ECC71 60%, #00B4D8 100%);
+      border: none;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    }
+
+    .btn-primary:hover, .btn-primary:focus {
+      background: linear-gradient(90deg, #28b463 60%, #0096c7 100%);
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    .form-floating-label {
+      position: relative;
+    }
+
+    .form-floating-label input:focus + label,
+    .form-floating-label input:not(:placeholder-shown) + label {
+      top: -12px;
+      left: 8px;
+      font-size: 0.85em;
+      color: #00B4D8;
+      background: #fff;
+      padding: 0 4px;
+      border-radius: 4px;
+      transition: 0.2s;
+    }
+
+    .form-floating-label label {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      pointer-events: none;
+      color: #888;
+      background: transparent;
+      transition: 0.2s;
+      font-size: 1em;
+    }
+
+    .form-floating-label input {
+      padding-top: 24px;
+    }
+
+    .animated-input:focus {
+      animation: pulseInput 0.3s;
+    }
+
+    @keyframes pulseInput {
+      0% { box-shadow: 0 0 0 0 #00B4D8; }
+      70% { box-shadow: 0 0 0 6px #00B4D833; }
+      100% { box-shadow: 0 0 0 0 #00B4D8; }
+    }
+
+    .link-anim {
+      color: #00B4D8;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .link-anim:hover {
+      color: #2ECC71;
+    }
+    .link-anim::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #2ECC71, #00B4D8);
+      transition: width .3s;
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+    }
+    .link-anim:hover::after {
+      width: 100%;
+    }
+
+    .form-stepper {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .step-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d1f2eb;
+      border: 2px solid #00B4D8;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .step-dot.active {
+      background: #2ECC71;
+      border-color: #2ECC71;
+    }
+    .step-dot.completed {
+      background: #00B4D8;
+      border-color: #00B4D8;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .register-container {
+        padding: 24px 8px 16px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container register-container animate__animated animate__fadeIn">
+    <img src="images/logo.webp" alt="Doc AI Logo" class="logo">
+    <h3 class="text-center mb-4 animate__animated animate__fadeInDown">Create Your Account</h3>
+    <div class="form-stepper mb-3">
+      <div class="step-dot active" id="step-dot-1"></div>
+      <div class="step-dot" id="step-dot-2"></div>
+      <div class="step-dot" id="step-dot-3"></div>
+    </div>
+    <form id="registerForm" autocomplete="off">
+      <!-- Step 1: Personal Info -->
+      <div class="form-step" id="step-1">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="text" class="form-control animated-input" id="name" placeholder=" " required>
+              <label for="name">Full Name</label>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="email" class="form-control animated-input" id="email" placeholder=" " required>
+              <label for="email">Email</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="date" class="form-control animated-input" id="dob" placeholder=" " required>
+              <label for="dob">Date of Birth</label>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="number" class="form-control animated-input" id="age" placeholder=" " min="0" required>
+              <label for="age">Age</label>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary w-100 mt-2" id="next-1">Next</button>
+      </div>
+      <!-- Step 2: Health Info -->
+      <div class="form-step d-none" id="step-2">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="number" class="form-control animated-input" id="weight" placeholder=" " min="0" required>
+              <label for="weight">Weight (kg)</label>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="number" class="form-control animated-input" id="height" placeholder=" " min="0" required>
+              <label for="height">Height (cm)</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="bloodGroup" class="form-label">Blood Group</label>
+            <select class="form-select animated-input" id="bloodGroup" required>
+              <option selected disabled value="">Select</option>
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>AB+</option>
+              <option>AB-</option>
+              <option>O+</option>
+              <option>O-</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="number" class="form-control animated-input" id="sugarLevel" placeholder=" " min="0">
+              <label for="sugarLevel">Sugar Level (mg/dL)</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="text" class="form-control animated-input" id="bpLevel" placeholder=" ">
+              <label for="bpLevel">Blood Pressure (e.g. 120/80)</label>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-floating-label">
+              <input type="text" class="form-control animated-input" id="allergies" placeholder=" ">
+              <label for="allergies">Allergies (if any)</label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-floating-label">
+            <input type="text" class="form-control animated-input" id="medAllergy" placeholder=" ">
+            <label for="medAllergy">Allergic to any medications?</label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary" id="back-2">Back</button>
+          <button type="button" class="btn btn-primary" id="next-2">Next</button>
+        </div>
+      </div>
+      <!-- Step 3: Account Info -->
+      <div class="form-step d-none" id="step-3">
+        <div class="mb-3">
+          <label for="role" class="form-label">Registering as</label>
+          <select class="form-select animated-input" id="role" required>
+            <option selected disabled value="">Select</option>
+            <option>Patient</option>
+            <option>Doctor</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <div class="form-floating-label">
+            <input type="password" class="form-control animated-input" id="password" placeholder=" " required>
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-secondary" id="back-3">Back</button>
+          <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+      </div>
+    </form>
+    <p class="mt-3 text-center animate__animated animate__fadeInUp">
+      Already have an account? <a href="index.html" class="link-anim">Login here</a>
+      <br>
+      <a href="forgot.html" class="link-anim">Forgot password?</a>
+    </p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Multi-step form logic
+    const steps = [
+      document.getElementById('step-1'),
+      document.getElementById('step-2'),
+      document.getElementById('step-3')
+    ];
+    const dots = [
+      document.getElementById('step-dot-1'),
+      document.getElementById('step-dot-2'),
+      document.getElementById('step-dot-3')
+    ];
+    let currentStep = 0;
+
+    function showStep(idx) {
+      steps.forEach((step, i) => {
+        if (i === idx) {
+          step.classList.remove('d-none');
+          step.classList.add('animate__animated', 'animate__fadeIn');
+        } else {
+          step.classList.add('d-none');
+          step.classList.remove('animate__animated', 'animate__fadeIn');
+        }
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active', 'completed');
+        if (i < idx) dot.classList.add('completed');
+        else if (i === idx) dot.classList.add('active');
+      });
+      currentStep = idx;
+    }
+
+    document.getElementById('next-1').onclick = function () {
+      // Basic validation for step 1
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const dob = document.getElementById('dob');
+      const age = document.getElementById('age');
+      if (!name.value.trim() || !email.value.trim() || !dob.value || !age.value) {
+        [name, email, dob, age].forEach(input => {
+          if (!input.value) input.classList.add('is-invalid');
+          else input.classList.remove('is-invalid');
+        });
+        return;
+      }
+      showStep(1);
+    };
+
+    document.getElementById('back-2').onclick = function () {
+      showStep(0);
+    };
+
+    document.getElementById('next-2').onclick = function () {
+      // Basic validation for step 2
+      const weight = document.getElementById('weight');
+      const height = document.getElementById('height');
+      const bloodGroup = document.getElementById('bloodGroup');
+      if (!weight.value || !height.value || !bloodGroup.value) {
+        [weight, height, bloodGroup].forEach(input => {
+          if (!input.value) input.classList.add('is-invalid');
+          else input.classList.remove('is-invalid');
+        });
+        return;
+      }
+      showStep(2);
+    };
+
+    document.getElementById('back-3').onclick = function () {
+      showStep(1);
+    };
+
+    // Floating label animation for all inputs
+    document.querySelectorAll('.form-floating-label input').forEach(input => {
+      input.addEventListener('input', function () {
+        if (this.value) {
+          this.classList.remove('is-invalid');
+        }
+      });
+    });
+    document.querySelectorAll('.form-select').forEach(select => {
+      select.addEventListener('change', function () {
+        if (this.value) {
+          this.classList.remove('is-invalid');
+        }
+      });
+    });
+
+    // Form submit animation and fake success
+    document.getElementById('registerForm').onsubmit = function (e) {
+      e.preventDefault();
+      // Final validation
+      const role = document.getElementById('role');
+      const password = document.getElementById('password');
+      if (!role.value || !password.value) {
+        [role, password].forEach(input => {
+          if (!input.value) input.classList.add('is-invalid');
+          else input.classList.remove('is-invalid');
+        });
+        return;
+      }
+      // Animate button and show success
+      const btn = this.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Registering...';
+      setTimeout(() => {
+        btn.innerHTML = 'Register';
+        btn.disabled = false;
+        this.reset();
+        showStep(0);
+        // Show success toast
+        showToast('Registration successful! Please login.');
+      }, 1500);
+    };
+
+    // Toast notification
+    function showToast(msg) {
+      let toast = document.createElement('div');
+      toast.className = 'position-fixed top-0 start-50 translate-middle-x p-3 animate__animated animate__fadeInDown';
+      toast.style.zIndex = 9999;
+      toast.innerHTML = `
+        <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              ${msg}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('animate__fadeInDown');
+        toast.classList.add('animate__fadeOutUp');
+        setTimeout(() => toast.remove(), 800);
+      }, 2500);
+    }
+
+    // Initial step
+    showStep(0);
+  </script>
+</body>
+
+</html>

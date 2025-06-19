@@ -1,0 +1,477 @@
+  <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doc AI - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #F5F7FA 0%, #CFFAFE 100%);
+      color: #2C3E50;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #00B4D8 60%, #48CAE4 100%);
+      color: white;
+      box-shadow: 0 2px 12px rgba(0, 180, 216, 0.08);
+      animation: navbarFadeIn 1s;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      min-height: 80px;
+      height: 80px;
+    }
+
+    @keyframes navbarFadeIn {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .navbar-nav {
+      gap: 0.5rem;
+    }
+
+    .nav-icon-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      margin: 0 4px;
+      position: relative;
+      text-decoration: none;
+    }
+    .nav-icon-btn:hover, .nav-icon-btn:focus {
+      background: #fff;
+      color: #00B4D8;
+      transform: scale(1.08);
+      outline: none;
+    }
+    .nav-icon-btn .nav-tooltip {
+      display: none;
+      position: absolute;
+      bottom: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2C3E50;
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+    }
+    .nav-icon-btn:focus .nav-tooltip,
+    .nav-icon-btn:hover .nav-tooltip {
+      display: block;
+    }
+
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      margin-left: 1rem;
+    }
+    .navbar-user span {
+      color: #fff;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+    .navbar-user .btn {
+      margin-left: 0.25rem;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem; /* Increased from 1.35rem */
+      color: #fff !important;
+      letter-spacing: 0.03em;
+      margin-right: 1.5rem;
+      gap: 0.7rem; /* Slightly increased gap for balance */
+      text-decoration: none;
+      user-select: none;
+      line-height: 1.1;
+    }
+    .navbar-brand .logo-icon {
+      display: flex;
+      align-items: center;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+      filter: drop-shadow(0 2px 6px rgba(0,180,216,0.10));
+    }
+    .navbar-brand .logo-icon img {
+      height: 3.5rem; /* Increased from 2.2rem */
+      width: 3.5rem;  /* Increased from 2.2rem */
+      object-fit: contain;
+      display: block;
+    }
+
+    .dashboard-container {
+      padding: 48px 0 32px 0;
+      animation: dashboardFadeIn 1.2s;
+    }
+
+    @keyframes dashboardFadeIn {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .dashboard-card {
+      border-radius: 18px;
+      padding: 32px 20px 28px 20px;
+      background: #fff;
+      box-shadow: 0 6px 24px rgba(0, 180, 216, 0.10), 0 1.5px 4px rgba(44, 62, 80, 0.04);
+      text-align: center;
+      transition: transform 0.35s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      min-height: 260px;
+      opacity: 0;
+      transform: translateY(30px) scale(0.98);
+    }
+
+    .dashboard-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 12px 32px rgba(0, 180, 216, 0.16), 0 2px 8px rgba(44, 62, 80, 0.08);
+      z-index: 2;
+    }
+
+    .dashboard-card i {
+      font-size: 2.5rem;
+      color: #00B4D8;
+      margin-bottom: 16px;
+      transition: color 0.3s, transform 0.3s;
+      filter: drop-shadow(0 2px 6px rgba(0,180,216,0.10));
+    }
+
+    .dashboard-card:hover i {
+      color: #2ECC71;
+      transform: scale(1.15) rotate(-6deg);
+    }
+
+    .dashboard-card h5 {
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 18px;
+      letter-spacing: 0.01em;
+      font-size: 1.18rem;
+      color: #2C3E50;
+      transition: color 0.3s;
+    }
+
+    .dashboard-card:hover h5 {
+      color: #00B4D8;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #2ECC71 60%, #00B4D8 100%);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 8px 28px;
+      box-shadow: 0 2px 8px rgba(46,204,113,0.10);
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover, .btn-primary:focus {
+      background: linear-gradient(90deg, #27ae60 60%, #0096c7 100%);
+      box-shadow: 0 4px 16px rgba(46,204,113,0.18);
+      transform: scale(1.05);
+    }
+
+    /* Tooltip style */
+    .dashboard-tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      transform: translateX(-50%);
+      background: #2C3E50;
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 10;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+    }
+    .dashboard-card:hover .dashboard-tooltip {
+      opacity: 1;
+    }
+
+    @media (max-width: 991px) {
+      .dashboard-container {
+        padding: 32px 0 16px 0;
+      }
+      .dashboard-card {
+        min-height: 220px;
+        padding: 24px 10px 20px 10px;
+      }
+      .navbar {
+        min-height: 64px;
+        height: 64px;
+      }
+      .navbar-brand .logo-icon img {
+        height: 2.2rem;
+        width: 2.2rem;
+      }
+      .navbar-brand {
+        font-size: 1.6rem; /* Increased from 1.1rem */
+      }
+    }
+    @media (max-width: 767px) {
+      .dashboard-card {
+        min-height: 180px;
+        padding: 18px 6px 14px 6px;
+      }
+      .dashboard-container {
+        padding: 18px 0 8px 0;
+      }
+      .navbar {
+        min-height: 56px;
+        height: 56px;
+      }
+      .navbar-brand .logo-icon img {
+        height: 1.7rem;
+        width: 1.7rem;
+      }
+      .navbar-brand {
+        font-size: 1.2rem; /* Increased from 1rem */
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark px-4">
+    <div class="container-fluid px-0">
+      <a class="navbar-brand d-flex align-items-center" href="home.html">
+        <span class="logo-icon">
+          <img src="images/logo.webp" alt="Doc AI Logo" />
+        </span>
+        <span style="font-size:inherit; line-height:1.1;">Doc AI</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="mx-auto">
+          <ul class="navbar-nav align-items-center flex-row flex-wrap" style="font-family: 'Montserrat', 'Inter', sans-serif;">
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="symptom.html" title="Symptom Checker" tabindex="0">
+                <i class="fa-solid fa-stethoscope"></i>
+                <span class="nav-tooltip">Symptom Checker</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="doctors.html" title="Connect to Doctor" tabindex="0">
+                <i class="fa-solid fa-user-doctor"></i>
+                <span class="nav-tooltip">Connect to Doctor</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="skin-scanner.html" id="skinNav" title="Skin Scanner" tabindex="0">
+                <i class="fa-solid fa-camera"></i>
+                <span class="nav-tooltip">Skin Scanner</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="report-analyzer.html" id="reportNav" title="Report Analyzer" tabindex="0">
+                <i class="fa-solid fa-file-medical"></i>
+                <span class="nav-tooltip">Report Analyzer</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="blood-donor.html" id="bloodNav" title="Blood Donor" tabindex="0">
+                <i class="fa-solid fa-hand-holding-droplet"></i>
+                <span class="nav-tooltip">Blood Donor</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="book-hospital.html" id="hospitalNav" title="Book Hospital" tabindex="0">
+                <i class="fa-solid fa-hospital"></i>
+                <span class="nav-tooltip">Book Hospital</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon-btn" href="prescription.html" id="prescriptionNav" title="Prescription" tabindex="0">
+                <i class="fa-solid fa-file-lines"></i>
+                <span class="nav-tooltip">Prescription</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="navbar-user ms-lg-3 ms-0 mt-2 mt-lg-0">
+          <span>Welcome, <strong>Ramani</strong></span>
+          <button class="btn btn-light btn-sm rounded-circle shadow-sm" id="logoutBtn" title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-primary"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="container dashboard-container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <a href="symptom.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="1" data-tooltip="Check your symptoms with AI">
+            <i class="fa-solid fa-stethoscope"></i>
+            <h5>AI Symptom Checker</h5>
+            <button class="btn btn-primary mt-2" id="symptomBtn" type="button" onclick="window.location.href='symptom.html';return false;">Start Checkup</button>
+            <div class="dashboard-tooltip">Check your symptoms with AI</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="doctors.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="2" data-tooltip="Connect instantly to a doctor">
+            <i class="fa-solid fa-user-doctor"></i>
+            <h5>Connect to Doctor</h5>
+            <button class="btn btn-primary mt-2" id="doctorBtn" type="button" onclick="window.location.href='doctors.html';return false;">Connect</button>
+            <div class="dashboard-tooltip">Connect instantly to a doctor</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="skin-scanner.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="3" data-tooltip="Scan your skin for analysis">
+            <i class="fa-solid fa-camera"></i>
+            <h5>Skin Scanner</h5>
+            <button class="btn btn-primary mt-2" id="skinBtn" type="button" onclick="window.location.href='skin-scanner.html';return false;">Upload Photo</button>
+            <div class="dashboard-tooltip">Scan your skin for analysis</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="report-analyzer.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="4" data-tooltip="Analyze your medical reports">
+            <i class="fa-solid fa-file-medical"></i>
+            <h5>Report Analyzer</h5>
+            <button class="btn btn-primary mt-2" id="reportBtn" type="button" onclick="window.location.href='report-analyzer.html';return false;">Upload Report</button>
+            <div class="dashboard-tooltip">Analyze your medical reports</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="blood-donor.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="5" data-tooltip="Find or register as a blood donor">
+            <i class="fa-solid fa-hand-holding-droplet"></i>
+            <h5>Blood Donor</h5>
+            <button class="btn btn-primary mt-2" id="bloodBtn" type="button" onclick="window.location.href='blood-donor.html';return false;">Register/Search</button>
+            <div class="dashboard-tooltip">Find or register as a blood donor</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="book-hospital.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="6" data-tooltip="Book a hospital appointment">
+            <i class="fa-solid fa-hospital"></i>
+            <h5>Book Hospital</h5>
+            <button class="btn btn-primary mt-2" id="hospitalBtn" type="button" onclick="window.location.href='book-hospital.html';return false;">Book Now</button>
+            <div class="dashboard-tooltip">Book a hospital appointment</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="prescription.html" class="dashboard-card-link" tabindex="0" style="text-decoration:none;">
+          <div class="dashboard-card" data-anim="7" data-tooltip="Download your prescription">
+            <i class="fa-solid fa-file-lines"></i>
+            <h5>Download Prescription</h5>
+            <button class="btn btn-primary mt-2" id="prescriptionBtn" type="button" onclick="window.location.href='prescription.html';return false;">Download</button>
+            <div class="dashboard-tooltip">Download your prescription</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for interactivity (no longer used, but kept for structure) -->
+  <div style="display:none">
+    <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="featureModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+          <div class="modal-header border-0">
+            <h5 class="modal-title" id="featureModalLabel"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="featureModalBody">
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Interactive tooltips for keyboard accessibility (dashboard cards)
+    document.querySelectorAll('.dashboard-card').forEach(card => {
+      card.addEventListener('focus', function () {
+        this.querySelector('.dashboard-tooltip').style.opacity = 1;
+      });
+      card.addEventListener('blur', function () {
+        this.querySelector('.dashboard-tooltip').style.opacity = 0;
+      });
+    });
+
+    // Logout button animation and action
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      this.classList.add('animate__animated', 'animate__shakeX');
+      setTimeout(() => {
+        // Simulate logout
+        window.location.href = "index.html";
+      }, 600);
+    });
+
+    // Animate cards in a neat, professional staggered fade-in
+    function animateCardsNeatly() {
+      const cards = Array.from(document.querySelectorAll('.dashboard-card'));
+      cards.forEach(card => {
+        card.classList.remove('visible');
+      });
+      // Staggered fade-in with a neat, professional effect
+      cards.forEach((card, idx) => {
+        setTimeout(() => {
+          card.classList.add('visible');
+        }, 180 * idx + 200); // 200ms initial delay, 180ms between cards
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', animateCardsNeatly);
+
+    // Optionally, re-animate on scroll if you want cards to appear again (not required for initial load)
+    // window.addEventListener('scroll', animateCardsNeatly);
+  </script>
+</body>
+
+</html>
